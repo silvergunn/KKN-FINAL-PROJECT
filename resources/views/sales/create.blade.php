@@ -1,18 +1,25 @@
 <x-layouts::app :title="__('Record Sale')">
     <div class="mx-auto max-w-2xl space-y-6 p-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Record New Sale</h1>
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">Select a product, optional customer, and quantity sold.</p>
+                <p class="text-xs font-semibold uppercase tracking-widest text-terracotta-600 dark:text-terracotta-500">
+                    Point of Sale
+                </p>
+                <h1 class="mt-1 text-2xl font-semibold tracking-tight text-espresso-900 dark:text-oat-50">
+                    Record New Sale
+                </h1>
+                <p class="text-sm text-espresso-600 dark:text-espresso-400">
+                    Select a product, optional customer, and quantity sold.
+                </p>
             </div>
             <a href="{{ route('sales.index') }}"
-               class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800">
+               class="rounded-xl border border-almond bg-crema px-4 py-2 text-sm font-medium text-espresso-700 transition hover:bg-oat-100 dark:border-espresso-700 dark:bg-espresso-900 dark:text-oat-200">
                 Sales History
             </a>
         </div>
 
         @if ($errors->any())
-            <div class="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-300">
+            <div class="rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/50 dark:text-red-300">
                 <p class="font-medium">Unable to record sale:</p>
                 <ul class="mt-1 list-disc pl-5">
                     @foreach ($errors->all() as $error)
@@ -23,15 +30,15 @@
         @endif
 
         <form method="POST" action="{{ route('sales.store') }}"
-              class="space-y-5 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+              class="space-y-5 rounded-2xl border border-almond bg-crema p-6 shadow-xs dark:border-espresso-700 dark:bg-espresso-900">
             @csrf
 
             <div>
-                <label for="product_id" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    Product <span class="text-red-500">*</span>
+                <label for="product_id" class="block text-sm font-medium text-espresso-900 dark:text-oat-100">
+                    Product <span class="text-terracotta-600">*</span>
                 </label>
                 <select id="product_id" name="product_id" required
-                        class="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100">
+                        class="mt-1.5 block w-full rounded-xl border border-almond bg-white px-3.5 py-2.5 text-sm text-espresso-900 shadow-2xs transition focus:border-terracotta-600 focus:outline-none focus:ring-2 focus:ring-terracotta-600/20 dark:border-espresso-700 dark:bg-espresso-800 dark:text-oat-50">
                     <option value="">-- Choose a product --</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}"
@@ -39,7 +46,7 @@
                                 data-stock="{{ $product->stock_quantity }}"
                                 @selected(old('product_id') == $product->id)
                                 @disabled($product->stock_quantity < 1)>
-                            {{ $product->name }} — {{ number_format($product->price, 2) }}
+                            {{ $product->name }} — &#8369;{{ number_format($product->price, 2) }}
                             ({{ $product->stock_quantity > 0 ? $product->stock_quantity . ' in stock' : 'Out of stock' }})
                         </option>
                     @endforeach
@@ -50,11 +57,11 @@
             </div>
 
             <div>
-                <label for="customer_id" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    Customer (Optional)
+                <label for="customer_id" class="block text-sm font-medium text-espresso-900 dark:text-oat-100">
+                    Customer <span class="font-normal text-espresso-600 dark:text-espresso-400">(Optional)</span>
                 </label>
                 <select id="customer_id" name="customer_id"
-                        class="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100">
+                        class="mt-1.5 block w-full rounded-xl border border-almond bg-white px-3.5 py-2.5 text-sm text-espresso-900 shadow-2xs transition focus:border-terracotta-600 focus:outline-none focus:ring-2 focus:ring-terracotta-600/20 dark:border-espresso-700 dark:bg-espresso-800 dark:text-oat-50">
                     <option value="">Walk-in Customer</option>
                     @foreach ($customers as $customer)
                         <option value="{{ $customer->id }}" @selected(old('customer_id') == $customer->id)>
@@ -68,31 +75,33 @@
             </div>
 
             <div>
-                <label for="quantity" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    Quantity <span class="text-red-500">*</span>
+                <label for="quantity" class="block text-sm font-medium text-espresso-900 dark:text-oat-100">
+                    Quantity <span class="text-terracotta-600">*</span>
                 </label>
                 <input id="quantity" name="quantity" type="number" min="1" step="1"
                        value="{{ old('quantity', 1) }}" required
-                       class="mt-1 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100">
+                       class="mt-1.5 block w-full rounded-xl border border-almond bg-white px-3.5 py-2.5 text-sm text-espresso-900 shadow-2xs transition focus:border-terracotta-600 focus:outline-none focus:ring-2 focus:ring-terracotta-600/20 dark:border-espresso-700 dark:bg-espresso-800 dark:text-oat-50">
                 @error('quantity')
                     <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="rounded-lg bg-zinc-50 p-4 dark:bg-zinc-800/60">
+            <div class="rounded-xl border border-almond bg-oat-50 p-4 dark:border-espresso-700 dark:bg-espresso-800/70">
                 <div class="flex items-center justify-between text-sm">
-                    <span class="text-zinc-500 dark:text-zinc-400">Estimated Total</span>
-                    <span id="estimated-total" class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">0.00</span>
+                    <span class="font-medium text-espresso-600 dark:text-espresso-400">Estimated Total</span>
+                    <span class="text-lg font-bold text-espresso-900 dark:text-oat-50">
+                        &#8369;<span id="estimated-total">0.00</span>
+                    </span>
                 </div>
             </div>
 
             <div class="flex items-center justify-end gap-3 pt-2">
                 <a href="{{ route('sales.index') }}"
-                   class="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800">
+                   class="rounded-xl border border-almond bg-white px-4 py-2 text-sm font-medium text-espresso-700 transition hover:bg-oat-100 dark:border-espresso-700 dark:bg-espresso-800 dark:text-oat-200">
                     Cancel
                 </a>
                 <button type="submit"
-                        class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+                        class="rounded-xl bg-terracotta-600 px-4 py-2 text-sm font-medium text-crema shadow-xs transition hover:bg-terracotta-700">
                     Complete Sale
                 </button>
             </div>
