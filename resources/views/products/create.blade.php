@@ -1,19 +1,33 @@
-<x-layouts::app :title="__('Add product')">
-    <div class="min-h-full rounded-3xl bg-zinc-950 p-5 text-zinc-100 sm:p-8">
-        <a href="{{ route('products.index') }}" class="text-sm text-teal-300 hover:underline">
-            ← Back to products
-        </a>
-
-        <div class="my-8">
-            <p class="text-xs font-semibold uppercase tracking-[0.25em] text-teal-300">
-                Inventory / New
-            </p>
-            <h1 class="mt-2 text-3xl font-bold">Add product</h1>
-            <p class="mt-2 text-sm text-zinc-400">Set its price and available stock.</p>
+<x-layouts::app :title="__('Add Product')">
+    <div class="mx-auto max-w-2xl space-y-6 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-widest text-terracotta-600 dark:text-terracotta-500">Inventory</p>
+                <h1 class="mt-1 text-2xl font-semibold tracking-tight text-espresso-900 dark:text-oat-50">Add product</h1>
+                <p class="text-sm text-espresso-600 dark:text-espresso-400">Create a new menu item with price, stock, and photo.</p>
+            </div>
+            <a href="{{ route('products.index') }}"
+               class="rounded-xl border border-almond bg-crema px-4 py-2 text-sm font-medium text-espresso-700 transition hover:bg-oat-100 dark:border-espresso-700 dark:bg-espresso-900 dark:text-oat-200">
+                Back to Catalog
+            </a>
         </div>
 
-        <div class="max-w-3xl rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 sm:p-8">
+        <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data"
+              class="space-y-6 rounded-2xl border border-almond bg-crema p-6 shadow-xs dark:border-espresso-700 dark:bg-espresso-900">
+            @csrf
+
             @include('products._form')
-        </div>
+
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <a href="{{ route('products.index') }}"
+                   class="rounded-xl border border-almond bg-white px-4 py-2 text-sm font-medium text-espresso-700 transition hover:bg-oat-100 dark:border-espresso-700 dark:bg-espresso-800 dark:text-oat-200">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="rounded-xl bg-terracotta-600 px-4 py-2 text-sm font-medium text-crema shadow-xs transition hover:bg-terracotta-700">
+                    Save Product
+                </button>
+            </div>
+        </form>
     </div>
 </x-layouts::app>

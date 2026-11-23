@@ -62,4 +62,23 @@ class SaleController extends Controller
             ->route('sales.index')
             ->with('success', 'Sale recorded and inventory updated successfully.');
     }
+
+    public function destroy(Sale $sale): RedirectResponse
+    {
+        DB::transaction(function () use ($sale) {
+            if ($sale->product_id) {
+                $product = Product::lockForUpdate()->find($sale->product_id);
+
+                if ($product) {
+                    $product->increment('stock_quantity', $sale->quantity);
+                }
+            }
+
+            $sale->delete();
+        });
+
+        return redirect()
+            ->route('sales.index')
+            ->with('success', "Sale #{$sale->id} was voided and {$sale->quantity} unit(s) were returned to inventory.");
+    }
 }
