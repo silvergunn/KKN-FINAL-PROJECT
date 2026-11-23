@@ -38,3 +38,9 @@ yarn-error.log
 /boost.json
 /opencode.json
 /opencode.jsonc
+
+/bootstrap/cache/*.php
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+/storage/logs/*.log
